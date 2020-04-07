@@ -6,16 +6,31 @@ import { Container, Row, Col } from "reactstrap";
 
 class App extends Component {
   state = {
-    currentCategory: ""
-  }
+    currentCategory: "",
+    products:[]
+  };
   changeCategory = (category) => {
     this.setState({ currentCategory: category.categoryName });
+    this.getProducts(category.id);
   };
   productInfo = { title: "Product List" };
-  categoryInfo = { title: "Category List", 
-  changeCategory:this.changeCategory, 
-  currentCategory:this.state.currentCategory 
-};
+  categoryInfo = {
+    title: "Category List",
+  };
+
+  // apiden veri çekme
+  getProducts = (categoryId) => {
+    let url = 'http://localhost:4000/products';
+    if(categoryId){
+      url += '/?categoryId=' + categoryId;
+    }
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => this.setState({ products: data }));
+  };
+  componentDidMount(){
+    this.getProducts();
+  }
 
   render() {
     return (
@@ -27,10 +42,18 @@ class App extends Component {
 
           <Row>
             <Col xs="3">
-              <CategoryList currentCategory={this.state.currentCategory} changeCategory={this.changeCategory} info={this.categoryInfo} />
+              <CategoryList
+                currentCategory={this.state.currentCategory}
+                changeCategory={this.changeCategory}
+                info={this.categoryInfo}
+              />
             </Col>
             <Col xs="9">
-              <ProductList currentCategory={this.state.currentCategory} info={this.productInfo} />
+              <ProductList
+                products={this.state.products}
+                currentCategory={this.state.currentCategory}
+                info={this.productInfo}
+              />
             </Col>
           </Row>
         </Container>
