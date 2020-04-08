@@ -6,7 +6,7 @@ export default class CategoryList extends Component {
     categories: []
   };
 
-  // apiden veri çekme
+  // apiden kategoriler verisini çeker.
   getCategories = () => {
     fetch('http://localhost:4000/categories')
       .then(response => response.json())
@@ -23,7 +23,7 @@ export default class CategoryList extends Component {
         <h3>{this.props.info.title}</h3>
         <ListGroup>
           {this.state.categories.map((category) => (
-            <ListGroupItem
+            <ListGroupItem active={category.categoryName === this.props.currentCategory ? true : false}
               onClick={() => this.props.changeCategory(category)}
               key={category.id}
             >
