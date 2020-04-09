@@ -3,6 +3,7 @@ import Navi from "./Navi";
 import ProductList from "./ProductList";
 import CategoryList from "./CategoryList";
 import { Container, Row, Col } from "reactstrap";
+import alertify from 'alertifyjs';
 
 class App extends Component {
   state = {
@@ -37,7 +38,7 @@ class App extends Component {
       newSepet[sonuc]["adet"] += 1;
     }
     this.setState({ sepet: newSepet });
-    console.log(this.state.sepet);
+    alertify.success('" ' + product.productName + ' " added to sepet !');
   };
 
   // Sepetteki ürünlerin adetini azaltır bir adet var ise siler.
