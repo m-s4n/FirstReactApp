@@ -7,6 +7,7 @@ import alertify from "alertifyjs";
 import { Route, Switch} from "react-router-dom";
 import NotFound from "./NotFound";
 import SepetDetail from "./SepetDetail";
+import Registry from "./Registry";
 
 class App extends Component {
   state = {
@@ -132,6 +133,11 @@ class App extends Component {
                 )}
                 ></Route>
                 {/* olmayan path istenirse */}
+
+                {/* Registry sayfası  path = /registry */}
+                <Route exact path='/registry' component={Registry}>
+                
+                </Route>
                 <Route component={NotFound}></Route>
               </Switch>
             </Col>
