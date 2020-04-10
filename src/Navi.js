@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import {Link} from 'react-router-dom';
 import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
@@ -23,7 +23,7 @@ export default class Navi extends Component {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">Seymen App</NavbarBrand>
+          <NavbarText><Link to="/">Seymen App</Link></NavbarText>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mr-auto" navbar>

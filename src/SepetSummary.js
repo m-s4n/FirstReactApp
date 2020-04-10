@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from 'react-router-dom';
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -36,7 +37,7 @@ export default class SepetSummary extends Component {
           ))}
 
           <DropdownItem divider />
-          <DropdownItem>Reset</DropdownItem>
+          <DropdownItem><Link to="/sepet">Go to Sepet</Link></DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );

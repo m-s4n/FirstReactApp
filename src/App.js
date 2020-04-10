@@ -3,7 +3,10 @@ import Navi from "./Navi";
 import ProductList from "./ProductList";
 import CategoryList from "./CategoryList";
 import { Container, Row, Col } from "reactstrap";
-import alertify from 'alertifyjs';
+import alertify from "alertifyjs";
+import { Route, Switch} from "react-router-dom";
+import NotFound from "./NotFound";
+import SepetDetail from "./SepetDetail";
 
 class App extends Component {
   state = {
@@ -32,6 +35,7 @@ class App extends Component {
       newSepet.push({
         id: product.id,
         name: product.productName,
+        price:product.unitPrice,
         adet: 1,
       });
     } else {
@@ -54,15 +58,17 @@ class App extends Component {
       }
     });
     this.setState({ sepet: newSepet });
+    alertify.warning('" ' + product.name + ' " reduced from sepet !');
   };
   // Sepetteki ürünün adetine bakılmaksızın siler.
   deleteToSepet = (product) => {
     let newSepet = this.state.sepet;
-    newSepet = newSepet.filter(item => {
+    newSepet = newSepet.filter((item) => {
       return item.id !== product.id;
-    })
-    this.setState({sepet:newSepet});
-  }
+    });
+    this.setState({ sepet: newSepet });
+    alertify.error('" ' + product.name + ' " deleted from sepet !');
+  };
 
   // apiden ürünler verisini çeker.
   getProducts = (categoryId) => {
@@ -83,26 +89,51 @@ class App extends Component {
       <div>
         <Container>
           <Navi
-            sepet = {this.state.sepet}
-            decreaseToSepet = {this.decreaseToSepet}
-            deleteToSepet = {this.deleteToSepet}
+            sepet={this.state.sepet}
+            decreaseToSepet={this.decreaseToSepet}
+            deleteToSepet={this.deleteToSepet}
           />
 
           <Row>
             <Col xs="3">
               <CategoryList
-                currentCategory = {this.state.currentCategory}
-                changeCategory = {this.changeCategory}
-                info = {this.categoryInfo}
+                currentCategory={this.state.currentCategory}
+                changeCategory={this.changeCategory}
+                info={this.categoryInfo}
               />
             </Col>
             <Col xs="9">
-              <ProductList
-                addToSepet={this.addToSepet}
-                products={this.state.products}
-                currentCategory={this.state.currentCategory}
-                info={this.productInfo}
-              />
+              {/* Burada routing işlemi yapılıyor*/}
+              <Switch>
+              {/* path = / */}
+                <Route
+                  exact
+                  path="/"
+                  render={props => (
+                    <ProductList
+                      {...props}
+                      addToSepet={this.addToSepet}
+                      products={this.state.products}
+                      currentCategory={this.state.currentCategory}
+                      info={this.productInfo}
+                    />
+                  )}
+                ></Route>
+                {/* path = /sepet */}
+                <Route exact 
+                path="/sepet" 
+                render={props =>(
+                  <SepetDetail
+                    {...props}
+                    deleteToSepet={this.deleteToSepet}
+                    decreaseToSepet={this.decreaseToSepet}
+                    sepet={this.state.sepet}
+                  />
+                )}
+                ></Route>
+                {/* olmayan path istenirse */}
+                <Route component={NotFound}></Route>
+              </Switch>
             </Col>
           </Row>
         </Container>
